@@ -4,8 +4,10 @@ import express from "express";
 import helmet from "helmet";
 import nocache from "nocache";
 import { messagesRouter } from "./messages/messages.router";
+import { secretsRouter } from './secrets/secrets.router'
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
+import { connect, disconnect } from './mongo/connection';
 
 dotenv.config();
 
@@ -21,14 +23,13 @@ const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 const app = express();
 const apiRouter = express.Router();
 
+// Middleware setup
 app.use(express.json());
 app.set("json spaces", 2);
 
 app.use(
   helmet({
-    hsts: {
-      maxAge: 31536000,
-    },
+    hsts: { maxAge: 31536000 },
     contentSecurityPolicy: {
       useDefaults: false,
       directives: {
@@ -36,16 +37,10 @@ app.use(
         "frame-ancestors": ["'none'"],
       },
     },
-    frameguard: {
-      action: "deny",
-    },
+    frameguard: { action: "deny" },
   })
 );
 
-app.use((req, res, next) => {
-  res.contentType("application/json; charset=utf-8");
-  next();
-});
 app.use(nocache());
 
 app.use(
@@ -57,12 +52,48 @@ app.use(
   })
 );
 
+// Response content type middleware
+app.use((req, res, next) => {
+  res.contentType("application/json; charset=utf-8");
+  next();
+});
+
+// API Routes
 app.use("/api", apiRouter);
 apiRouter.use("/messages", messagesRouter);
+apiRouter.use("/secrets", secretsRouter);
 
+// Error handling middleware
 app.use(errorHandler);
 app.use(notFoundHandler);
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+// Start server and handle graceful shutdown
+const startServer = async () => {
+  try {
+    await connect(); // Connect to the database
+
+    const server = app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}`);
+    });
+
+    // Graceful shutdown
+    const shutdown = async () => {
+      console.log("Shutting down server...");
+      await disconnect(); // Close MongoDB connection
+      server.close(() => {
+        console.log("Server closed.");
+        process.exit(0);
+      });
+    };
+
+    // Catch termination signals
+    process.on('SIGINT', shutdown);
+    process.on('SIGTERM', shutdown);
+
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1); // Exit with failure code if server can't start
+  }
+};
+
+startServer();

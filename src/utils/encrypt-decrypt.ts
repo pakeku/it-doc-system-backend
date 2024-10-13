@@ -13,7 +13,7 @@ if (keyBuffer.length !== 32) {
 }
 
 // Encryption function
-export function encrypt(text: string): { iv: string; encryptedData: string } {
+export function encrypt(text: string): { iv: string; encrypted: string } {
     const iv = crypto.randomBytes(16); // Create an initialization vector (16 bytes)
     const cipher = crypto.createCipheriv(algorithm, keyBuffer, iv);
     let encrypted = cipher.update(text, 'utf8', 'hex');
@@ -21,7 +21,7 @@ export function encrypt(text: string): { iv: string; encryptedData: string } {
     
     return {
         iv: iv.toString('hex'), // Store IV as a hex string
-        encryptedData: encrypted // Store encrypted text as a hex string
+        encrypted // Store encrypted text as a hex string
     };
 }
 
