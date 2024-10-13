@@ -9,7 +9,7 @@ const keyBuffer = Buffer.from(key, 'hex');  // Convert to Buffer
 
 // Ensure key is of proper length (32 bytes for AES-256)
 if (keyBuffer.length !== 32) {
-  throw new Error('ENCRYPTION_KEY must be 32 bytes (256 bits) long.');
+  throw new Error(`ENCRYPTION_KEY must be 32 bytes (256 bits) long. You provided ${keyBuffer.length} bytes.`);
 }
 
 // Encryption function
