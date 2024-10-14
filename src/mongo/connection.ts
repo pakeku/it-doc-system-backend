@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { connection } from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,7 +21,12 @@ export const connect = async () => {
 }
 
 export const disconnect = async () => {
-    mongoose.disconnect()
+    const connection = mongoose.connection;
+    if (connection.readyState === 0) {
+        console.log('No connection to close');
+        return;
+    }
+    await mongoose.disconnect()
         .then(() => {
             console.log('Successfully disconnected from MongoDB');
         })

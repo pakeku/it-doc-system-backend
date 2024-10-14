@@ -12,14 +12,8 @@ import {
 
 export const messagesRouter = express.Router();
 
-messagesRouter.get("/public", (req, res) => {
+messagesRouter.all("/public", (_, res) => {
   const message = getPublicMessage();
-
-  res.status(200).json(message);
-});
-
-messagesRouter.get("/protected", validateAccessToken, (req, res) => {
-  const message = getProtectedMessage();
 
   res.status(200).json(message);
 });

@@ -27,17 +27,6 @@ const SecretSchema = new Schema<SecretDocument>(
   }
 );
 
-// Middleware to encrypt the secret data before saving to the database
-SecretSchema.pre<SecretDocument>("save", function (next) {
-  // Only encrypt the data if it has not been encrypted yet
-  if (this.isModified("encrypted")) {
-    const { encrypted, iv } = encrypt(this.encrypted);
-    this.encrypted = encrypted;
-    this.iv = iv;
-  }
-  next();
-});
-
 // Method to decrypt the secret value
 SecretSchema.methods.getValue = function (): string {
   return decrypt({ iv: this.iv, encryptedData: this.encrypted });

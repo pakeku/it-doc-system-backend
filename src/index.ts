@@ -20,7 +20,7 @@ if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
 const PORT = parseInt(process.env.PORT, 10);
 const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 
-const app = express();
+export const app = express();
 const apiRouter = express.Router();
 
 // Middleware setup
@@ -46,7 +46,7 @@ app.use(nocache());
 app.use(
   cors({
     origin: CLIENT_ORIGIN_URL,
-    methods: ["GET"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
     maxAge: 86400,
   })
@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 
 // API Routes
 app.use("/api", apiRouter);
-apiRouter.use("/messages", messagesRouter);
+apiRouter.use("/health", messagesRouter);
 apiRouter.use("/secrets", secretsRouter);
 
 // Error handling middleware
