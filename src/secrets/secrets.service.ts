@@ -23,7 +23,7 @@ export class SecretService {
 
     // Get all secrets
     public static async getAllSecrets(): Promise<SecretDocument[]> {
-        return SecretModel.find();
+        return SecretModel.find().select('name description createdAt updatedAt _id');
     }
 
     // Get a specific secret by ID
@@ -35,7 +35,7 @@ export class SecretService {
     public static async getDecryptedSecretById(id: string): Promise<string | null> {
         const secret = await SecretModel.findById(id);
         if (!secret) {
-            throw new Error("Secret not found");
+            return null;
         }
 
         // Decrypt and return the secret value (decryption is handled by the model's getValue method)

@@ -1,6 +1,7 @@
 // only for testing
-import dotenv from 'dotenv';
-dotenv.config
+import { loadEnvVariables } from "./loadEnvVariables";
+
+loadEnvVariables();
 
 const { AUTH0_DOMAIN,
     M2M_CLIENT_ID,

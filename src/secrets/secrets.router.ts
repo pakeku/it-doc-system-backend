@@ -53,6 +53,11 @@ secretsRouter.get(
     const { id } = req.params;
     try {
       const decryptedValue = await SecretService.getDecryptedSecretById(id);
+      
+      if (!decryptedValue) {
+        return res.status(404).json({ message: "Secret not found" });
+      }
+      
       res.status(200).json({ decryptedValue });
     } catch (error) {
       console.error("Error decrypting secret:", error);
