@@ -1,13 +1,94 @@
-# Express.js/TypeScript: API Basic Role-Based Access Control (RBAC) Code Sample
+# IT Documentation Project - Backend Setup
 
-This TypeScript code sample demonstrates **how to implement Role-Based Access Control (RBAC)** in Express.js API servers using Auth0.
+## Overview
 
-This code sample is part of the ["Auth0 Developer Hub"](https://auth0.com/developers/hub), a place where you can explore the authentication and authorization features of the Auth0 Identity Platform.
+This guide will walk you through setting up the backend for the IT Documentation System. Follow the steps below to get your local development environment up and running.
 
-Visit the ["Express.js/TypeScript Code Sample: Role-Based Access Control For Basic APIs"](https://auth0.com/developers/hub/code-samples/api/express-typescript/basic-role-based-access-control) page for instructions on how to configure and run this code sample and how to integrate it with a Single-Page Application (SPA) of your choice.
+---
 
-[![Express.js/TypeScript Code Sample: API Role-Based Access Control For Basic APIs](https://cdn.auth0.com/blog/hub/code-samples/api/express-typescript/basic-role-based-access-control.png)](https://auth0.com/developers/hub/code-samples/api/express-typescript/basic-role-based-access-control)
+## Prerequisites
 
-## Why Use Auth0?
+Ensure you have the following installed:
 
-Auth0 is a flexible drop-in solution to add authentication and authorization services to your applications. Your team and organization can avoid the cost, time, and risk that come with building your own solution to authenticate and authorize users. We offer tons of guidance and SDKs for you to get started and [integrate Auth0 into your stack easily](https://auth0.com/developers/hub/code-samples/full-stack).
+- [Node.js](https://nodejs.org) (v16 or higher)
+- [Yarn](https://yarnpkg.com) (option al, as an alternative to npm)
+- [Git](https://git-scm.com/downloads)
+
+---
+
+## Getting Started
+
+### 1. Clone the Repository
+
+Start by cloning the backend repository to your local machine:
+
+```bash
+git clone https://github.com/pakeku/it-doc-system-backend.git
+```
+
+### 2. Navigate to the Project Directory
+
+Move into the project folder:
+
+```bash
+cd it-doc-system-backend
+```
+
+### 3. Install Dependencies
+
+Install the required packages using **npm** or **yarn**. You can choose one of the following commands based on your preference:
+
+```bash
+# Using npm
+npm install
+
+# Or, using Yarn
+yarn
+```
+
+### 4. Configure Environment Variables
+
+You'll need to set up your environment variables for development:
+
+- Copy the provided `.env.sample` file to create a new `.env` file.
+- Open the `.env` file and update the placeholders with your specific environment variables.
+
+```bash
+cp .env.sample .env
+```
+
+> **Tip:** Ensure all variables are correctly filled, especially database credentials, API keys, and other secrets.
+
+### 5. Run the Development Server
+
+After configuring the environment variables, you can start the development server using one of the following commands:
+
+```bash
+# Using npm
+npm run dev
+
+# Or, using Yarn
+yarn dev
+```
+
+Your backend server should now be running locally!
+
+---
+
+## Troubleshooting
+
+- **Missing dependencies or errors on startup?**
+  - Try deleting `node_modules` and reinstalling them:
+    ```bash
+    rm -rf node_modules
+    npm install
+    ```
+
+- **Issues with environment variables?**
+  - Double-check your `.env` file to ensure all required variables are set.
+  
+---
+
+## Contributing
+
+Please use the [User Story Template](.github/user_story_template.md) as a reference when requesting a change. Make sure you fork the repo and create a new branch. Please reach out if you have any questions. 
