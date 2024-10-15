@@ -89,5 +89,6 @@ Your backend server should now be running locally!
   
 ---
 
-## Next Steps
-Development!
+## Contributing
+
+Please use the [User Story Template](.github/user_story_template.md) as a reference when requesting a change. Make sure you fork the repo and create a new branch. Please reach out if you have any questions. 
