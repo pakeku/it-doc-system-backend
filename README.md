@@ -11,8 +11,8 @@ This guide will walk you through setting up the backend for the IT Documentation
 Ensure you have the following installed:
 
 - [Node.js](https://nodejs.org) (v16 or higher)
-- [Yarn](https://yarnpkg.com) (optional, as an alternative to npm)
-- Git
+- [Yarn](https://yarnpkg.com) (option al, as an alternative to npm)
+- [Git](https://git-scm.com/downloads)
 
 ---
 
@@ -90,7 +90,4 @@ Your backend server should now be running locally!
 ---
 
 ## Next Steps
-
-Once your backend is running, you can proceed to testing the API endpoints or setting up the frontend.
-
-For any questions or issues, feel free to check the project's [issue tracker](https://github.com/pakeku/it-doc-system-backend/issues) or contribute to the documentation.
+Development!
