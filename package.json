@@ -1,7 +1,7 @@
 {
-  "name": "api_express_typescript_hello-world",
+  "name": "it-documentation-backend",
   "version": "1.0.0",
-  "description": "Auth0 Express.js API code sample with TypeScript",
+  "description": "A backend powered by Express.js, styled by TypeScript, and Secured by Auth0",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
@@ -10,9 +10,13 @@
     "test:watch": "jest --watch",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["Auth0", "Express.js", "TypeScript"],
+  "author": "Auth0, Erick Pacheco",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pakeku/it-doc-system-backend.git"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
