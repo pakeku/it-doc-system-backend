@@ -25,21 +25,21 @@ describe('Create Secret: API', () => {
         expect(response.status).toBe(401);
     });
 
-    it('should return 403 - Unauthorized for POST /api/secrets with valid token, but missing permissions: create:secrets', async () => {
-        const token = await generateNonPrivilegedToken(); // Get non-privileged token
+    it('should return 403 - Forbidden for POST /api/secrets with valid token, but missing permissions: create:secrets', async () => {
+        const token = await generateNonPrivilegedToken(); 
         const response = await request(app).post('/api/secrets').set('Authorization', `Bearer ${token}`);
-        expect(response.status).toBe(403); // 403 - Forbidden
+        expect(response.status).toBe(403); 
     });
 
     it('should return 400 - Bad Request for POST /api/secrets with missing required fields', async () => {
-        const token = await generateAdminToken(); // Get admin token
+        const token = await generateAdminToken(); 
         const response = await request(app).post('/api/secrets').set('Authorization', `Bearer ${token}`);
         expect(response.status).toBe(400);
     });
 
     it('should return 201 - Created for POST /api/secrets with valid token and valid payload', async () => {
         const newSecret = { name: 'Test Secret', description: 'A simple test with jest', secretValue: 'Hello World - 2024. This is a super secret.' }
-        const token = await generateAdminToken(); // Get admin token
+        const token = await generateAdminToken(); 
         const response = await request(app).post('/api/secrets')
             .set('Authorization', `Bearer ${token}`)
             .send(newSecret);
@@ -141,7 +141,7 @@ describe('Read Secrets: API', () => {
         expect(response.status).toBe(401);
     });
 
-    it('should return 403 - Forbidden for GET /api/secrets/:secretId/decrypted with valid token, but missing permissions: read:secrets', async () => {
+    it('should return 403 - Forbidden for GET /api/secrets/:secretId/decrypted with valid token, but missing permissions: decrypt:secrets', async () => {
         const token = await generateNonPrivilegedToken(); // Get non-privileged token
         const response = await request(app).get('/api/secrets/123/decrypted').set('Authorization', `Bearer ${token}`);
         expect(response.status).toBe(403); // 403 - Forbidden
