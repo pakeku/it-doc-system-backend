@@ -87,7 +87,20 @@ Your backend server should now be running locally!
 - **Issues with environment variables?**
   - Double-check your `.env` file to ensure all required variables are set.
   
----
+
+Continuous Development and Testing
+----------------------------------
+
+A workflow named **'Test Code'** has been set up in the `basic-role-based-access-control` branch. This workflow automatically runs the test suite whenever a pull request is initiated for this branch.
+
+-   The workflow is triggered by any pull request targeting the `basic-role-based-access-control` branch.
+-   It ensures that the code passes all tests before merging, helping maintain the integrity of the branch.
+-   The workflow is configured to use Node.js version 20, and it installs the project dependencies with `npm ci` before running `npm test`.
+
+You can view the workflow configuration at the following link:\
+[GitHub Workflow - Test Code](https://github.com/pakeku/it-doc-system-backend/blob/basic-role-based-access-control/.github/workflows/test.yml)
+
+--- 
 
 ## Contributing
 
