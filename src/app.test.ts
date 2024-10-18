@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { app } from './app';
-import { getToken } from './utils/tokenService';
+import { generateAdminToken } from './secrets/secrets.helper';
 
 describe('Health Check API', () => {
     const methods = ['get', 'post', 'put', 'delete'] as const;
@@ -31,7 +31,7 @@ describe('Health Check API', () => {
 
     // should return 200 - OK for GET /api/health/admin with token and valid permissions: Read = "read:secrets"
     it('should return 200 - OK for GET /api/health/admin with token and valid permissions', async () => {
-        const token = await getToken();
+        const token = await generateAdminToken();
         const response = await request(app)
             .get(endpoints.private)
             .set('Authorization', `Bearer ${token}`);
