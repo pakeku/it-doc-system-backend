@@ -5,13 +5,11 @@ import { app } from '../app';
 import { connect, disconnect } from '../mongo/connection';
 import { generateAdminToken, generateNonPrivilegedToken } from './secrets.helper';
 
-loadEnvVariables(); // Load environment variables for testing
-
-describe('Create Secret: API', () => {
-
+// Helper function to manage setup and teardown
+const helper = () => {
     // Establish connection before all tests
     beforeAll(async () => {
-        loadEnvVariables(); // Load environment variables for testing   
+        loadEnvVariables(); // Load environment variables for testing
         await connect();
     });
 
@@ -19,6 +17,11 @@ describe('Create Secret: API', () => {
     afterAll(async () => {
         await disconnect();
     });
+};
+
+describe('Create Secret: API', () => {
+
+    helper(); // Call helper function to establish connection
 
     it('should return 401 - Unauthorized for POST /api/secrets without token', async () => {
         const response = await request(app).post('/api/secrets');
@@ -53,19 +56,9 @@ describe('Create Secret: API', () => {
     });
 })
 
-
 describe('Read Secrets: API', () => {
 
-    // Establish connection before all tests
-    beforeAll(async () => {
-        loadEnvVariables(); // Load environment variables for testing
-        await connect();
-    });
-
-    // Disconnect after all tests to clean up
-    afterAll(async () => {
-        await disconnect();
-    });
+    helper(); // Call helper function to establish connection
 
     /**
      * Utility function to perform a GET request to /api/secrets
@@ -75,13 +68,6 @@ describe('Read Secrets: API', () => {
         const req = request(app).get('/api/secrets');
         return token ? req.set('Authorization', `Bearer ${token}`) : req;
     };
-
-    /**
-     * const decryptSecret = (token: string | null, secretId: string) => {
-        return request(app).get(`/api/secrets/${secretId}/decrypted`)
-            .set('Authorization', `Bearer ${token}`)
-    };
-     */
 
     it('should return 401 - Unauthorized for GET /api/secrets without token', async () => {
         const response = await getSecrets(null); // No token
