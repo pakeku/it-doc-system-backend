@@ -1,68 +1,43 @@
-import cors from "cors";
 import * as dotenv from "dotenv";
-import express from "express";
-import helmet from "helmet";
-import nocache from "nocache";
-import { messagesRouter } from "./messages/messages.router";
-import { errorHandler } from "./middleware/error.middleware";
-import { notFoundHandler } from "./middleware/not-found.middleware";
-
+import { connect, disconnect } from './mongo/connection';
+import { app } from "./app";
 dotenv.config();
 
-if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
+if (!process.env.PORT) {
   throw new Error(
     "Missing required environment variables. Check docs for more info."
   );
 }
 
 const PORT = parseInt(process.env.PORT, 10);
-const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
 
-const app = express();
-const apiRouter = express.Router();
+// Start server and handle graceful shutdown
+const startServer = async () => {
+  try {
+    await connect(); // Connect to the database
 
-app.use(express.json());
-app.set("json spaces", 2);
+    const server = app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}`);
+    });
 
-app.use(
-  helmet({
-    hsts: {
-      maxAge: 31536000,
-    },
-    contentSecurityPolicy: {
-      useDefaults: false,
-      directives: {
-        "default-src": ["'none'"],
-        "frame-ancestors": ["'none'"],
-      },
-    },
-    frameguard: {
-      action: "deny",
-    },
-  })
-);
+    // Graceful shutdown
+    const shutdown = async () => {
+      console.log("Shutting down server...");
+      await disconnect(); // Close MongoDB connection
+      server.close(() => {
+        console.log("Server closed.");
+        process.exit(0);
+      });
+    };
 
-app.use((req, res, next) => {
-  res.contentType("application/json; charset=utf-8");
-  next();
-});
-app.use(nocache());
+    // Catch termination signals
+    process.on('SIGINT', shutdown);
+    process.on('SIGTERM', shutdown);
 
-app.use(
-  cors({
-    origin: CLIENT_ORIGIN_URL,
-    methods: ["GET"],
-    allowedHeaders: ["Authorization", "Content-Type"],
-    maxAge: 86400,
-  })
-);
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1); // Exit with failure code if server can't start
+  }
+};
 
-app.use("/api", apiRouter);
-apiRouter.use("/messages", messagesRouter);
-
-app.use(errorHandler);
-app.use(notFoundHandler);
-
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+startServer();

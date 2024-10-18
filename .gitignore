@@ -168,6 +168,10 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Dependency tracker [that way the user can select which dependencies tool to use]
+package-lock.json
+yarn.lock
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
